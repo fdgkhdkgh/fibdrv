@@ -1,0 +1,88 @@
+目前的猜測：
+
+out 是我們的輸出 expected
+        .txt 是預期輸出（是錯的唷，就是最初步的校驗而已）
+
+            verify
+        .py 會計算出正確的答案
+
+            偷看了其他人的作業，基本上對 fibdrv.c 以及
+                client.c 進行魔改都是可以的
+
+    1. 大數的加減乘 2. 搞懂 fast doubling
+
+
+    -- ------
+
+    4 /
+    9
+
+    目標： 1. 完成大數運算 2. 完成簡單的fibonacci(
+        不用 fast doubling) 3. 測試一次效能(練習測試 kernel driver 的效能)
+
+
+
+        就我的猜測，
+    f(n) 的 n 要夠大， fast doubling 才會比較快。 可以用測試效能來了解 n
+    要多大， fast doubling 才會比較快，並且在 driver
+    裡面同時實作這兩個演算法，並以 n 大小來決定要使用哪一個演算法
+
+    當然會有這樣的現象不一定只是 fast doubling
+    這個算法的問題，大數運算的方式也會很嚴重的影響效能
+
+    https
+    :  // silverfoxkkk.pixnet.net/blog/post/41152901
+       一個kernel driver 想要有多個C檔
+
+
+       我參考的資料沒辦法處理負數以及小數 這讓我不禁感到好奇， python
+       萬能的大數運算，是怎麼做到這些事情的
+
+
+       -- ------
+
+       4 /
+       10
+
+       沒完成原本的目標。。。 好消息是基本的功能完成了，驗證功能用的 python
+       也寫好了
+
+       可以開始學習要怎麼測試效能了 以及 fast doubling
+
+       接下來： 1. 學習怎麼測試效能 2. 實作 fast doubling
+       3. 研究 Jserv 老師龐大的教材
+
+
+       原來現在用的這個界面，叫做 sysfs
+
+
+       -- -------
+
+       4 /
+       11
+
+       照著老師給的教學，來新增一個介面 搞懂 kobject 的玩法
+       這東西好猛，可以顯示變數 所以可以把值寫到某個變數去，讓 user space
+       可以去取用
+
+
+       所以可以這樣子
+
+       1. 跑一次 fibo 2. 記錄時間到 foo 變數 3. user space 去取用，並且到檔案去
+
+
+       成功量測出普通 fibonacci 的時間 會有一些離群值
+       看有沒有方法可以減少離群值，我想這就是所謂的“減少雜訊”吧
+
+       -- --------
+
+       4 /
+       12
+
+       先把 fast doubling 簡單實作在 user space
+
+       觀看宗遠的筆記，看看 clz 是怎麼用來加速 fibonacci 的運算
+
+       實作在 kernel space ，並觀察效能
+
+       加速方式：加大每一個 element 的容量，減少陣列的 element 數量
