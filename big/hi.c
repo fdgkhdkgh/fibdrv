@@ -12,7 +12,7 @@ int main()
       bignum_add(&(f[i-2]), &(f[i-1]), &(f[i]));
     }*/
 
-
+    /*
     char buf[10000];
 
     struct bn num;
@@ -23,7 +23,18 @@ int main()
 
     // bignum_to_string(&(f[4999]), buf, sizeof(buf));
 
-    printf("result : 0x%s\n", buf);
+    printf("result : 0x%s\n", buf);*/
+
+    unsigned long long k = (unsigned long long) 1
+                           << ((sizeof(long long) * 8) - 1);
+
+    long long g = 8;
+
+    while (!(k & g)) {
+        k = k >> 1;
+    }
+    // printf("sizeof(long long) : %lu\n", sizeof(long long));
+    printf("k = %llu\n", k);
 
     return 0;
 }

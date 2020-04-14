@@ -1,19 +1,21 @@
-set terminal png truecolor enhanced size 1000,
-    300 butt
+set terminal png truecolor enhanced size 1000, 300 butt
 
-        set output 'data.png'
+set output 'data.png'
 
-    set tics font 'small' unset mxtics unset mytics
+set tics font 'small' 
 
-        set grid xtics linetype 0 linecolor rgb '#e0e0e0' set grid ytics
-            linetype 0 linecolor rgb '#e0e0e0' set border linecolor
-                rgb '#50c0f0' set tics textcolor rgb '#000000' set key outside
+unset mxtics 
+unset mytics
 
-                    set autoscale xfixmin set autoscale xfixmax
+set grid xtics linetype 0 linecolor rgb '#e0e0e0' 
+set grid ytics linetype 0 linecolor rgb '#e0e0e0' 
+set border linecolor rgb '#50c0f0' 
+set tics textcolor rgb '#000000' 
+set key outside
+set autoscale xfixmin 
+set autoscale xfixmax
 
-                        set xlabel "f[k]" set ylabel "ns"
+set xlabel "f[k]" 
+set ylabel "ns"
 
-    plot 'normal_arraylen_32bit_4' using 1 : 2 with lines
-        title 'normal' linecolor rgb '#000000',
-    'fast_doubling_arraylen_32bit_4' using 1 : 2 with lines
-        title 'fast doubling' linecolor rgb '#c00080'
+plot 'normal_arraylen_32bit_4' using 1 : 2 with lines title 'normal' linecolor rgb '#000000', 'fast_doubling_arraylen_32bit_4_v3' using 1 : 2 with lines title 'fast doubling' linecolor rgb '#c00080'

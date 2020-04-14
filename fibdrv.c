@@ -28,7 +28,7 @@ MODULE_VERSION("0.1");
 #define MAX_LENGTH 100
 
 //#define BN_ARRAY_SIZE 32
-#define BN_ARRAY_SIZE 4
+#define BN_ARRAY_SIZE 11
 #define MAX_ELEMENT ((uint64_t) 0xFFFFFFFF)
 
 static uint64_t foo;
@@ -253,7 +253,7 @@ static char BeAppended[100] = {0};
 static struct bignum bigfibo[4000];
 static int state[4000] = {0};
 
-static void big_fib_sequence_v1(long long k)
+/*static void big_fib_sequence_v1(long long k)
 {
     bignum_from_uint64(&(bigfibo[0]), 0);
     bignum_from_uint64(&(bigfibo[1]), 1);
@@ -261,6 +261,57 @@ static void big_fib_sequence_v1(long long k)
     for (int i = 2; i <= k; i++) {
         bignum_add(&(bigfibo[i - 2]), &(bigfibo[i - 1]), &(bigfibo[i]));
     }
+}*/
+
+// fast doubling
+static void big_fib_sequence_v3(long long k)
+{
+    if (k == 0) {
+        bignum_from_uint64(&bigfibo[0], 0);
+        return;
+    }
+
+    unsigned long long leftbit = (unsigned long long) 1
+                                 << ((sizeof(leftbit) * 8) - 1);
+
+    while (!(leftbit & k)) {
+        leftbit = leftbit >> 1;
+    }
+
+    struct bignum a;
+    struct bignum b;
+
+    struct bignum tmp1;
+    struct bignum tmp2;
+    struct bignum t1;
+    struct bignum t2;
+
+    bignum_from_uint64(&a, 0);
+    bignum_from_uint64(&b, 1);
+
+    while (leftbit > 0) {
+        bignum_mul(&a, &b, &t1);
+        bignum_lshift(&t1, &t1, 1);
+        bignum_mul(&a, &a, &t2);
+        bignum_sub(&t1, &t2, &tmp1);
+
+        bignum_mul(&a, &a, &t1);
+        bignum_mul(&b, &b, &t2);
+        bignum_add(&t1, &t2, &tmp2);
+
+        bignum_assign(&a, &tmp1);
+        bignum_assign(&b, &tmp2);
+
+        if (leftbit & k) {
+            bignum_add(&a, &b, &tmp1);
+            bignum_assign(&a, &b);
+            bignum_assign(&b, &tmp1);
+        }
+
+        leftbit = leftbit >> 1;
+    }
+
+    bignum_assign(&bigfibo[k], &a);
 }
 
 // fast doubling
@@ -354,7 +405,7 @@ static ssize_t fib_read(struct file *file,
     }
 
     start = ktime_get();
-    big_fib_sequence_v1(*offset);
+    big_fib_sequence_v3(*offset);
     end = ktime_get();
 
     foo = ktime_to_ns(end) - ktime_to_ns(start);
