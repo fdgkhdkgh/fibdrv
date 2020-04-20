@@ -1,0 +1,26 @@
+print "0 : ", ARG0
+print "1 : ", ARG1
+print "2 : ", ARG2
+print "3 : ", ARG3
+print "4 : ", ARG4
+
+set terminal png truecolor enhanced size 1000, 300 butt
+set output ARG4
+
+unset mxtics
+unset mytics
+
+set grid xtics linetype 0 linecolor rgb '#e0e0e0'
+set grid ytics linetype 0 linecolor rgb '#e0e0e0'
+set border linecolor rgb '#50c0f0'
+set tics textcolor rgb '#000000'
+set key outside
+set autoscale xfixmin
+set autoscale xfixmax
+
+set title "f[k]"
+set xlabel "k"
+set ylabel "ns"
+
+plot ARG1 using 1 : 2 with lines title 'normal' linecolor rgb '#000000', ARG2 using 1 : 2 with lines title 'fast doubling top down' linecolor rgb '#c00080', ARG3 using 1 : 2 with lines title 'fast doubling bottom up' linecolor rgb '#0090ff'
+

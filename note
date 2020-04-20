@@ -111,11 +111,21 @@ out 是我們的輸出 expected
 首先把它改成不用遞迴
 
 
+---------------
+
+4/14
+
+1. 建立 user space 的測試效能環境
+
+2. 在user space 改善 bignum 的 mul （可以改成 元素 16 bit，暫時的陣列為 64bit ， 這樣就能很穩定的 O(N^2) 乘法）
+(往後所有的優化都做在 user space ， 再移到 kernel space)
+
+gnuplot 以及 命令列引數
+https://stackoverflow.com/questions/12328603/how-to-pass-command-line-argument-to-gnuplot
 
 
-1. clz
 
-2. 
+
 
 
 
