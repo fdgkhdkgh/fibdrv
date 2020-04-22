@@ -23,6 +23,7 @@ There may well be room for performance-optimizations and improvements.
 
 #include <assert.h>
 #include <stdint.h>
+#include <stddef.h>
 
 
 /* This macro defines the word size in bytes of the array that constitues the
@@ -82,6 +83,7 @@ There may well be room for performance-optimizations and improvements.
 /* Data-holding structure: array of DTYPEs */
 struct bn {
     DTYPE array[BN_ARRAY_SIZE];
+    size_t size;
 };
 
 

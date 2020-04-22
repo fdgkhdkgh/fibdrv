@@ -42,6 +42,7 @@ void bignum_init(struct bn *n)
     for (i = 0; i < BN_ARRAY_SIZE; ++i) {
         n->array[i] = 0;
     }
+    n->size = 0;
 }
 
 
@@ -69,6 +70,12 @@ void bignum_from_int(struct bn *n, DTYPE_TMP i)
     n->array[1] = tmp;
 #endif
 #endif
+
+    if (n->array[1] > 0) {
+        n->size = 2;
+    } else {
+        n->size = 1;
+    }
 }
 
 
@@ -225,6 +232,8 @@ void bignum_add(struct bn *a, struct bn *b, struct bn *c)
         carry = (tmp > MAX_VAL);
         c->array[i] = (tmp & MAX_VAL);
     }
+
+
 }
 
 
@@ -265,19 +274,8 @@ void bignum_mul(struct bn *a, struct bn *b, struct bn *c)
 
     bignum_init(c);
 
-    // tmp 其實用 4 個 uint32_t 就行了
-    // 判斷 carry 的部分，可用 uint64_t 
-    // 在加回去的時候，可用 i 與 j 來判斷要加到 c 的哪個 index 裡
-    // （有點類似原本 _lshift_word 的做法）
-
     DTYPE upper;
     DTYPE lower;
-    /*DTYPE_TMP inter = 0x1000ffffffff;
-
-    lower = inter & MAX_VAL;
-    upper = inter >> (8 * WORD_SIZE); 
-    printf("intermediate :  0x%lx, lower : 0x%x, upper : 0x%x\n", inter, lower, upper);
-    */
 
     for (i = 0; i < BN_ARRAY_SIZE; ++i) {
         //bignum_init(&row);
@@ -309,14 +307,8 @@ void bignum_mul(struct bn *a, struct bn *b, struct bn *c)
 			intermediate  = intermediate >> (8 * WORD_SIZE);
 		    }
                 }
-
-                //bignum_from_int(&tmp, intermediate);
-                //_lshift_word(&tmp, i + j);
-                //bignum_add(&tmp, &row, &row);
-                //bignum_add(c, &tmp, c);
             }
         }
-        //bignum_add(c, &row, c);
     }
 }
 

@@ -25,11 +25,12 @@ MODULE_VERSION("0.1");
  * ssize_t can't fit the number > 92
  */
 //#define MAX_LENGTH 92
-#define MAX_LENGTH 100
+#define MAX_LENGTH 500
 
 //#define BN_ARRAY_SIZE 32
 #define BN_ARRAY_SIZE 11
 #define MAX_ELEMENT ((uint64_t) 0xFFFFFFFF)
+#define WORD_SIZE 4
 
 static uint64_t foo;
 
@@ -175,16 +176,37 @@ static void bignum_mul(struct bignum *a, struct bignum *b, struct bignum *c)
 
     bignum_init(c);
 
+    uint32_t upper;
+    uint32_t lower;
+
     for (i = 0; i < BN_ARRAY_SIZE; i++) {
         bignum_init(&row);
         for (j = 0; j < BN_ARRAY_SIZE; j++) {
             if (i + j < BN_ARRAY_SIZE) {
-                bignum_init(&tmp);
                 uint64_t intermediate =
                     ((uint64_t) a->array[i] * (uint64_t) b->array[j]);
-                bignum_from_uint64(&tmp, intermediate);
-                _lshift_word(&tmp, i + j);
-                bignum_add(&tmp, &row, &row);
+
+		lower = intermediate & MAX_ELEMENT;
+		upper = intermediate >> (8 * WORD_SIZE);
+
+                intermediate = (uint64_t) lower + (uint64_t) c->array[i+j];
+
+                c->array[i+j] = intermediate & MAX_ELEMENT;
+                intermediate  = intermediate >> (8 * WORD_SIZE);
+
+                if (i + j + 1 < BN_ARRAY_SIZE) {
+                    intermediate = (uint64_t) upper + (uint64_t) c->array[i+j+1] + intermediate;
+                    c->array[i+j+1] = intermediate & MAX_ELEMENT;
+                    intermediate  = intermediate >> (8 * WORD_SIZE);
+
+                    int k = i + j + 2;
+                    while (intermediate > 0 && k < BN_ARRAY_SIZE) {
+                        intermediate = (uint64_t) c->array[k] + intermediate;
+
+                        c->array[k] = intermediate & MAX_ELEMENT;
+                        intermediate  = intermediate >> (8 * WORD_SIZE);
+                    }
+                }
             }
         }
         bignum_add(c, &row, c);

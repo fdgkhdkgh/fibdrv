@@ -18,4 +18,4 @@ set autoscale xfixmax
 set xlabel "f[k]" 
 set ylabel "ns"
 
-plot 'normal_arraylen_32bit_4' using 1 : 2 with lines title 'normal' linecolor rgb '#000000', 'fast_doubling_arraylen_32bit_4_v3' using 1 : 2 with lines title 'fast doubling' linecolor rgb '#c00080'
+plot 'normal_arraylen_32bit_11' using 1 : 2 with lines title 'normal' linecolor rgb '#000000', 'fast_doubling_arraylen_32bit_11_v3' using 1 : 2 with lines title 'fast doubling' linecolor rgb '#c00080'
