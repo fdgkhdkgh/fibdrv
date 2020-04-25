@@ -431,15 +431,8 @@ static ssize_t fib_read(struct file *file,
     end = ktime_get();
 
     foo = ktime_to_ns(end) - ktime_to_ns(start);
-
     bignum_to_string(&(bigfibo[*offset]), message, sizeof(message));
-
-    // 在這裡把算完的 fibonacci 用 copy_to_user
-    // 回傳到 user space 去
     copy_to_user(buf, message, strlen(message));
-
-    // 這個 offset 就是第幾個 fibonacci 數。
-    // return (ssize_t) fib_sequence(*offset);
     return (ssize_t) strlen(message);
 }
 
