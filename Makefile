@@ -1,7 +1,14 @@
 CONFIG_MODULE_SIG = n
 TARGET_MODULE := fibdrv
 
-obj-m := $(TARGET_MODULE).o
+obj-m := fibdrv.o
+fibdrv-objs := \
+	main.o \
+	apm.o \
+	bignum.o \
+	sqr.o \
+	mul.o \
+	format.o
 
 ccflags-y := -std=gnu99 -Wno-declaration-after-statement
 

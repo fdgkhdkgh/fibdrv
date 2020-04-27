@@ -503,12 +503,7 @@ static int __init init_fib_dev(void)
         kobject_put(example_kobj);
 
 
-    // ----
-    // big fibonacci
     int rc = 0;
-
-    // bignum_to_string(&(bigfibo[99]), message, sizeof(message));
-    // printk("bignum test : %s\n", message);
 
     mutex_init(&fib_mutex);
 

@@ -18,4 +18,5 @@ set autoscale xfixmax
 set xlabel "f[k]" 
 set ylabel "ns"
 
-plot 'normal_arraylen_32bit_11' using 1 : 2 with lines title 'normal' linecolor rgb '#000000', 'fast_doubling_arraylen_32bit_11_v3' using 1 : 2 with lines title 'fast doubling' linecolor rgb '#c00080'
+#plot 'normal_arraylen_32bit_11' using 1 : 2 with lines title 'normal' linecolor rgb '#000000', 'teacher_style_bignum' using 1 : 2 with lines title 'teacher fast doubling' linecolor rgb '#c00080'
+plot 'teacher_bignum_teacher_fibonacci' using 1 : 2 with lines title 'teacher''s fast doubling' linecolor rgb '#000000', 'my_fibo' using 1:2 with lines title 'my fast doubling' linecolor rgb '#c00000', 'originally_my_fibo' using 1:2 with lines title 'my original fast doubling' linecolor rgb '#0000e3', 'naive_fibo' using 1:2 with lines title 'naive fibonacci' linecolor rgb '#F9F900'

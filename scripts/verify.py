@@ -5,7 +5,7 @@ result = []
 result_split = []
 dics = []
 
-for i in range(2, 501):
+for i in range(2, 10001):
     expect.append(expect[i - 1] + expect[i - 2])
 with open('out', 'r') as f:
     tmp = f.readline()
@@ -17,7 +17,7 @@ for r in result:
     if (r.find('Reading') != -1):
         result_split.append(r.split(' '))
         k = int(result_split[-1][5].split(',')[0])
-        f0 = int(result_split[-1][9].split('.')[0], 16)
+        f0 = int(result_split[-1][9].split('.')[0], 10)
         dics.append((k, f0))
 for i in dics:
     fib = i[1] 

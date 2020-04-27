@@ -28,7 +28,7 @@ int main()
     // char buf[1];
     char buf[8000];
     char write_buf[] = "testing writing";
-    int offset = 500; /* TODO: try test something bigger than the limit */
+    int offset = 10000; /* TODO: try test something bigger than the limit */
 
     memset(buf, 0, sizeof(buf));
 
@@ -55,7 +55,7 @@ int main()
 
         printf("Reading from " FIB_DEV
                " at offset %d, returned the sequence "
-               "0x%s.\n",
+               "%s.\n",
                i, buf);
 
 
@@ -86,7 +86,7 @@ int main()
 
         printf("Reading from " FIB_DEV
                " at offset %d, returned the sequence "
-               "0x%s.\n",
+               "%s.\n",
                i, buf);
     }
 
